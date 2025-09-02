@@ -2,10 +2,17 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
+import { Agent, run } from '@openai/agents'
 import { initRag, upsertDocuments, querySimilar } from './rag/store.js' // keep if you still want RAG APIs
 
 const app = express()
 const PORT = process.env.PORT || 4000
+
+// Agent that answers questions about AI services for SMEs
+const chatAgent = new Agent({
+    name: 'SME AI Advisor',
+    instructions: 'You answer questions about AI services for small and medium-sized enterprises in a concise, helpful manner.',
+})
 
 app.use(cors())
 app.use(express.json({ limit: '8mb' }))
@@ -34,6 +41,19 @@ app.post('/api/contact', (req, res) => {
     if (!name || !email || !message) return res.status(400).json({ error: 'Missing name, email, or message' })
     console.log('New contact:', { name, email, message })
     res.json({ message: 'Thanks! We will get back to you within 1 business day.' })
+})
+
+// SME AI services agent endpoint
+app.post('/api/agent', async (req, res) => {
+    const { question } = req.body || {}
+    if (!question?.trim()) return res.status(400).json({ error: 'Missing question' })
+    try {
+        const result = await run(chatAgent, question)
+        res.json({ answer: result.finalOutput })
+    } catch (e) {
+        console.error(e)
+        res.status(500).json({ error: e.message || 'agent_error' })
+    }
 })
 
 /** -------- OPTIONAL: keep these only if you still want manual RAG APIs ---------- */
