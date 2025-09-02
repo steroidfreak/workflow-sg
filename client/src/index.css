@@ -101,14 +101,14 @@ button:focus-visible {
   white-space: nowrap;
 }
 
-.navlinks {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
+  .navlinks {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
 
-/* light scheme overrides */
+  /* light scheme overrides */
 @media (prefers-color-scheme: light) {
   :root {
     --text: #213547;
@@ -120,4 +120,50 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* Chat agent widget */
+.chat-agent {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1000;
+}
+
+.chat-toggle {
+  padding: 0.5rem 1rem;
+}
+
+.chat-box {
+  width: 280px;
+  height: 360px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 0.5rem;
+  overflow-y: auto;
+}
+
+.chat-message {
+  margin-bottom: 0.5rem;
+}
+
+.chat-message.user {
+  text-align: right;
+}
+
+.chat-controls {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chat-controls input {
+  flex: 1;
 }
