@@ -1,0 +1,14 @@
+/* Add or update these styles */
+.navbar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
+.nav-inner {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
