@@ -1,11 +1,12 @@
+/* Lighten the overall color palette for better readability */
 :root {
-  --bg: #0b1220;
-  --card: #101a2c;
-  --text: #e6eefb;
-  --muted: #a8b2c1;
-  --brand: #5aa9ff;
-  --brand-hover: #4397f7;
-  --border: #1c2740;
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --text: #1e293b;
+  --muted: #475569;
+  --brand: #3b82f6;
+  --brand-hover: #2563eb;
+  --border: #cbd5e1;
 }
 * {
   box-sizing: border-box;
@@ -21,9 +22,9 @@ body {
     Arial;
   background: radial-gradient(
     1200px 600px at 20% -10%,
-    #14213d 0%,
+    #dbeafe 0%,
     var(--bg) 55%,
-    #070b14 100%
+    #e2e8f0 100%
   );
   color: var(--text);
 }
@@ -52,7 +53,7 @@ body {
   gap: 18px;
 }
 .card {
-  background: linear-gradient(180deg, var(--card), #0d1526);
+  background: linear-gradient(180deg, var(--card), #e2e8f0);
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 20px;
@@ -65,7 +66,7 @@ body {
   border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--brand);
-  color: #06121f;
+  color: #ffffff;
   font-weight: 700;
   cursor: pointer;
 }
@@ -75,7 +76,7 @@ body {
 .input,
 .textarea {
   width: 100%;
-  background: #0a1324;
+  background: #ffffff;
   color: var(--text);
   border: 1px solid var(--border);
   border-radius: 10px;
