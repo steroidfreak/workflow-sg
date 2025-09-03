@@ -101,14 +101,14 @@ button:focus-visible {
   white-space: nowrap;
 }
 
-  .navlinks {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-    flex-wrap: wrap;
-  }
+.navlinks {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
 
-  /* light scheme overrides */
+/* light scheme overrides */
 @media (prefers-color-scheme: light) {
   :root {
     --text: #213547;
@@ -125,45 +125,84 @@ button:focus-visible {
 /* Chat agent widget */
 .chat-agent {
   position: fixed;
-  top: 1rem;
+  bottom: 1rem; /* 👈 bottom instead of top */
   right: 1rem;
   z-index: 1000;
+  font-size: 14px;
 }
 
+/* Toggle button */
 .chat-toggle {
-  padding: 0.5rem 1rem;
+  background: var(--link);
+  color: #fff;
+  border: none;
+  border-radius: 999px; /* pill shape */
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: background 0.2s;
+}
+.chat-toggle:hover {
+  background: var(--link-hover);
 }
 
+/* Chat box */
 .chat-box {
-  width: 280px;
-  height: 360px;
+  width: 300px;
+  height: 400px;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--border);
+  border-radius: 12px;
   background: var(--bg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
+/* Messages */
 .chat-messages {
   flex: 1;
   padding: 0.5rem;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
-
-.chat-message {
-  margin-bottom: 0.5rem;
-}
-
 .chat-message.user {
-  text-align: right;
+  align-self: flex-end;
+  background: #2e3a52;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 10px;
+}
+.chat-message.bot {
+  align-self: flex-start;
+  background: #333d4f;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 10px;
 }
 
+/* Controls */
 .chat-controls {
   display: flex;
   gap: 0.25rem;
   padding: 0.5rem;
   border-top: 1px solid var(--border);
 }
-
 .chat-controls input {
   flex: 1;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #0f1622;
+  color: var(--text);
+}
+.chat-controls button {
+  background: var(--link);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
 }

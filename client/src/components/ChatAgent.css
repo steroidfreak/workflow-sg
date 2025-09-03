@@ -1,0 +1,115 @@
+/* Container */
+.chat-agent {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1100;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+/* Toggle Button */
+.chat-toggle {
+  background: var(--link);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: background 0.2s;
+}
+.chat-toggle:hover {
+  background: var(--link-hover);
+}
+
+/* Chat Box */
+.chat-box {
+  width: 320px;
+  height: 420px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+/* Header */
+.chat-header {
+  background: #1c1f24;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.chat-close {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* Messages */
+.chat-messages {
+  flex: 1;
+  padding: 0.75rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: #20242b;
+}
+.chat-message {
+  max-width: 80%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  font-size: 0.9rem;
+}
+.chat-message.user {
+  align-self: flex-end;
+  background: #2e3a52;
+  color: #fff;
+}
+.chat-message.bot {
+  align-self: flex-start;
+  background: #333d4f;
+  color: #fff;
+}
+
+/* Controls */
+.chat-controls {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-top: 1px solid var(--border);
+  background: #1c1f24;
+}
+.chat-controls input {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #0f1622;
+  color: #fff;
+}
+.chat-controls button {
+  background: var(--link);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+.chat-controls button:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
