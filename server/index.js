@@ -11,7 +11,8 @@ const PORT = process.env.PORT || 4000
 // Agent that answers questions about AI services for SMEs
 const chatAgent = new Agent({
     name: 'SME AI Advisor',
-    instructions: 'You answer questions about AI services for small and medium-sized enterprises in a concise, helpful manner.',
+    instructions:
+        'You provide concise, helpful answers about AI services for small and medium-sized enterprises (SMEs).',
 })
 
 app.use(cors())

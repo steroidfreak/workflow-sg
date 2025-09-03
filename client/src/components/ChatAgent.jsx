@@ -47,7 +47,7 @@ export default function ChatAgent() {
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && send()}
-                            placeholder='Ask about AI services…'
+                            placeholder='Ask about AI services for SMEs…'
                         />
                         <button onClick={send}>Send</button>
                         <button onClick={() => setOpen(false)}>×</button>
@@ -55,7 +55,7 @@ export default function ChatAgent() {
                 </div>
             ) : (
                 <button className='chat-toggle' onClick={() => setOpen(true)}>
-                    Chat
+                    AI SME Chat
                 </button>
             )}
         </div>
