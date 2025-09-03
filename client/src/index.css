@@ -125,7 +125,7 @@ button:focus-visible {
 /* Chat agent widget */
 .chat-agent {
   position: fixed;
-  bottom: 1rem;
+  top: 1rem;
   right: 1rem;
   z-index: 1000;
 }
