@@ -13,6 +13,9 @@ const chatAgent = new Agent({
     name: 'SME AI Advisor',
     instructions:
         'You provide concise, helpful answers about AI services for small and medium-sized enterprises (SMEs).',
+    tools: [],
+    handoffs: [],
+    model: 'gpt-5',
 })
 
 app.use(cors())
