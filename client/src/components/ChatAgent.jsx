@@ -7,7 +7,10 @@ export default function ChatAgent() {
     const listRef = useRef(null)
 
     useEffect(() => {
-        listRef.current?.scrollTo(0, listRef.current.scrollHeight)
+        const el = listRef.current
+        if (el) {
+            el.scrollTop = el.scrollHeight
+        }
     }, [messages])
 
     const send = async () => {
@@ -53,8 +56,13 @@ export default function ChatAgent() {
                         <button onClick={() => setOpen(false)}>×</button>
                     </div>
                 </div>
-            ) : (
-                <button className='chat-toggle' onClick={() => setOpen(true)}>
+            ) : null}
+            {!open && (
+                <button
+                    className='chat-toggle'
+                    onClick={() => setOpen(true)}
+                    aria-label='Open AI SME chat'
+                >
                     AI SME Chat
                 </button>
             )}
