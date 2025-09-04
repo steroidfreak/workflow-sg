@@ -22,6 +22,18 @@ export default function Home() {
                     <p>Generate checklists, schedule trainings, and keep records consistent across your apps.</p>
                 </div>
             </div>
+
+            <div className="card">
+                <h3>Where AI helps</h3>
+                <ul>
+                    <li><strong>Personal Productivity:</strong> Like building a personal assistant to handle your emails, calendar, and documents.</li>
+                    <li><strong>Marketing & Business:</strong> Automate social media posting, manage your CRM, handle customer onboarding, or even run entire sales processes.</li>
+                    <li><strong>E-commerce:</strong> From syncing product data to processing orders and handling customer support.</li>
+                    <li><strong>Data & Reporting:</strong> Pull data from multiple sources, clean it up, and generate reports automatically.</li>
+                    <li><strong>Home & Lifestyle:</strong> Connect it to smart home devices, trigger routines based on your time or location, or build little quality-of-life automations.</li>
+                    <li><strong>AI Integrations:</strong> Hook up language models, image tools, or custom APIs for task summarization, content creation, and advanced agents.</li>
+                </ul>
+            </div>
         </section>
     )
 }
