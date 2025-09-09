@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  api:
+    build: ./server
+    container_name: workflow_api
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # MONGO_URI comes from .env
+    expose:
+      - "3000"
+    # depends_on:
+    #   - mongo
+
+  web:
+    build:
+      context: ./client
+    container_name: workflow_web
+    restart: unless-stopped
+    ports:
+      - "8080:80"      # open http://localhost:8080
+    depends_on:
+      - api
+
+#   mongo:
+#     image: mongo:7
+#     container_name: workflow_mongo
+#     restart: unless-stopped
+#     environment:
+#       MONGO_INITDB_ROOT_USERNAME: root
+#       MONGO_INITDB_ROOT_PASSWORD: changeme
+#     volumes:
+#       - workflow_mongo_data:/data/db
+
+# volumes:
+#   workflow_mongo_data:

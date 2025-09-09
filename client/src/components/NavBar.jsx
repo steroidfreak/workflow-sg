@@ -23,15 +23,30 @@ export default function NavBar() {
     const closeMenu = () => setAnchorEl(null)
 
     return (
-        <AppBar position="static">
+        <AppBar position="fixed" sx={{ backgroundColor: '#000' }}>
             <Toolbar>
+                {/* Logo placeholder */}
+                <Box
+                    component="img"
+                    src="/logo.png" // 👈 replace with your logo file
+                    alt="Logo"
+                    sx={{ height: 40, width: 40, mr: 2 }}
+                />
+
+                {/* Brand text */}
                 <Typography
                     variant="h6"
                     component={RouterLink}
                     to="/"
-                    sx={{ flexGrow: 1, textDecoration: 'none', color: 'inherit' }}
+                    sx={{
+                        flexGrow: 1,
+                        textDecoration: 'none',
+                        color: 'inherit',
+                        fontWeight: 700,
+                        letterSpacing: 0.5
+                    }}
                 >
-                    Workflow.sg
+                    workflow.sg
                 </Typography>
 
                 {/* Desktop links */}

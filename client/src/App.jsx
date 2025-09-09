@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import NavBar from './components/NavBar.jsx'
 import Footer from './components/Footer.jsx'
 import ChatAgent from './components/ChatAgent.jsx'
+// import N8nTest from './pages/N8ntest.jsx'
 
 import Home from './pages/Home.jsx'
 import Services from './pages/Services.jsx'
@@ -14,18 +15,22 @@ export default function App() {
   return (
     <div className="app-shell">
       <NavBar />
-        <main className="container">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/demos" element={<Demos />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-        <Footer />
-        <ChatAgent />
-      </div>
-    )
-  }
+      <main className="container">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/demos" element={<Demos />} />
+          <Route path="/about" element={<About />} />
+          {/* <Route path="/n8n-test" element={<N8nTest />} /> */}
+
+          <Route path="/contact" element={<Contact />} />
+          {/* <Route path="/n8n-test" element={<N8nTest />} */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+      {/* <N8nTest /> */}
+      <Footer />
+      <ChatAgent />
+    </div>
+  )
+}

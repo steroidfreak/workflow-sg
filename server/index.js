@@ -6,7 +6,7 @@ import { Agent, run } from '@openai/agents'
 import { initRag, upsertDocuments, querySimilar } from './rag/store.js' // keep if you still want RAG APIs
 
 const app = express()
-const PORT = process.env.PORT || 4000
+const PORT = process.env.PORT || 3000
 
 // Agent that answers questions about AI services for SMEs
 const chatAgent = new Agent({
@@ -59,6 +59,92 @@ app.post('/api/agent', async (req, res) => {
         res.status(500).json({ error: e.message || 'agent_error' })
     }
 })
+
+// n8n webhook trigger (GET passthrough)
+// app.get('/api/n8n/trigger', async (req, res) => {
+//     try {
+//         const base = process.env.N8N_WEBHOOK_URL
+//         if (!base) return res.status(500).json({ error: 'N8N_WEBHOOK_URL missing' })
+
+//         // Forward all query params to n8n (e.g. ?foo=bar)
+//         const url = new URL(base)
+//         for (const [k, v] of Object.entries(req.query || {})) {
+//             url.searchParams.set(k, String(v))
+//         }
+
+//         const resp = await fetch(url.toString(), { method: 'GET', redirect: 'follow' })
+//         const text = await resp.text()
+
+//         res.status(resp.status).send(text)
+//     } catch (e) {
+//         console.error('n8n trigger error:', e)
+//         res.status(502).json({ error: 'upstream_error', detail: e.message })
+//     }
+// })
+
+// optional: POST -> GET adapter (send body as query to n8n)
+// app.post('/api/n8n/trigger', async (req, res) => {
+//     console.log('POST /api/n8n/trigger body:', req.body)
+//     try {
+//         const base = process.env.N8N_WEBHOOK_URL
+//         if (!base) return res.status(500).json({ error: 'N8N_WEBHOOK_URL missing' })
+
+//         const url = new URL(base)
+//         // flatten JSON body into query params (simple primitives only)
+//         const data = req.body || {}
+//         Object.entries(data).forEach(([k, v]) => url.searchParams.set(k, String(v)))
+
+//         const resp = await fetch(url.toString(), { method: 'GET', redirect: 'follow' })
+//         const text = await resp.text()
+
+//         res.status(resp.status).send(text)
+//     } catch (e) {
+//         console.error('n8n trigger error:', e)
+//         res.status(502).json({ error: 'upstream_error', detail: e.message })
+//     }
+// })
+
+// Method-preserving passthrough (handles POST correctly)
+app.all('/api/n8n/trigger', async (req, res) => {
+    try {
+        const base = process.env.N8N_WEBHOOK_URL
+        if (!base) return res.status(500).json({ error: 'N8N_WEBHOOK_URL missing' })
+
+        const method = req.method.toUpperCase()
+        const url = new URL(base)
+
+        // Forward query for non-body methods
+        if (!['POST', 'PUT', 'PATCH'].includes(method)) {
+            Object.entries(req.query || {}).forEach(([k, v]) => url.searchParams.set(k, String(v)))
+        }
+
+        const init = { method, headers: {} }
+        if (['POST', 'PUT', 'PATCH'].includes(method)) {
+            init.headers['Content-Type'] = 'application/json'
+            init.body = JSON.stringify(req.body ?? {})
+        }
+
+        const resp = await fetch(url.toString(), init)
+        const ct = (resp.headers.get('content-type') || '').toLowerCase()
+        const raw = await resp.text()               // may be empty
+
+        let payload = raw
+        if (ct.includes('application/json')) {
+            try {
+                payload = raw ? JSON.parse(raw) : {}    // handle empty JSON safely
+            } catch {
+                // leave as raw string if parsing fails
+            }
+        }
+
+        res.status(resp.status).send(payload)
+    } catch (e) {
+        console.error('n8n trigger error:', e)
+        res.status(502).json({ error: 'upstream_error', detail: e.message })
+    }
+})
+
+
 
 /** -------- OPTIONAL: keep these only if you still want manual RAG APIs ---------- */
 // Upsert docs into your Mongo collection with embeddings
