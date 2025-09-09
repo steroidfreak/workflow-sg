@@ -25,11 +25,12 @@ export default function ChatAgent() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ question })
             })
-            const data = await res.json()
-            setMessages(m => [
-                ...m,
-                { from: 'bot', text: data.answer || data.error || 'Error' }
-            ])
+            const data = await res.json().catch(() => ({}))
+            if (!res.ok || data.error) {
+                setMessages(m => [...m, { from: 'bot', text: '⚠️ Service unavailable' }])
+            } else {
+                setMessages(m => [...m, { from: 'bot', text: data.answer || 'No answer' }])
+            }
         } catch {
             setMessages(m => [...m, { from: 'bot', text: '⚠️ Network error' }])
         } finally {

@@ -56,7 +56,7 @@ app.post('/api/agent', async (req, res) => {
         res.json({ answer: result.finalOutput })
     } catch (e) {
         console.error(e)
-        res.status(500).json({ error: e.message || 'agent_error' })
+        res.status(502).json({ error: 'agent_unavailable' })
     }
 })
 
