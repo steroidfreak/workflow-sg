@@ -100,6 +100,7 @@
   border: 1px solid var(--border);
   background: #0f1622;
   color: #fff;
+  font-size: 16px; /* Prevent mobile browsers from zooming on focus */
 }
 .chat-controls button {
   background: var(--link);
