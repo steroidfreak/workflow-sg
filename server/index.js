@@ -43,8 +43,7 @@ app.post('/api/contact', (req, res) => {
 })
 
 // SME AI services agent endpoint
-app.post('/api/agent', async (req, res) => {
-    const { question } = req.body || {}
+async function handleAgent(question, res) {
     if (!question?.trim()) return res.status(400).json({ error: 'Missing question' })
     try {
         const result = await run(chatAgent, question)
@@ -53,6 +52,17 @@ app.post('/api/agent', async (req, res) => {
         console.error(e)
         res.status(502).json({ error: 'agent_unavailable' })
     }
+}
+
+app.post('/api/agent', (req, res) => {
+    const { question } = req.body || {}
+    handleAgent(question, res)
+})
+
+// lightweight GET variant for quick tests
+app.get('/api/agent', (req, res) => {
+    const question = req.query.question || req.query.q
+    handleAgent(typeof question === 'string' ? question : undefined, res)
 })
 
 // n8n webhook trigger (GET passthrough)
