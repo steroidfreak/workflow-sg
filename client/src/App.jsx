@@ -16,7 +16,7 @@ export default function App() {
   return (
     <div className="app-shell">
       <NavBar />
-      <main className="container">
+      <main className="container main-content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/services" element={<Services />} />

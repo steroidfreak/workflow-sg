@@ -38,6 +38,11 @@ body {
   width: min(1080px, 92%);
   margin: 32px auto;
 }
+
+/* ensure main content clears the fixed navbar */
+.main-content {
+  padding-top: 64px;
+}
 .navbar {
   display: flex;
   gap: 16px;
