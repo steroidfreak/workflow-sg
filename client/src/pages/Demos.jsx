@@ -20,7 +20,7 @@ export default function Demos() {
         <section className="grid" style={{ gap: 16 }}>
             {demos.map((demo) => (
                 <Link key={demo.path} to={demo.path} className="card" style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <img src={demo.image} alt={demo.title} style={{ width: '100%', height: 'auto', marginBottom: 12 }} />
+                    <img src={demo.image} alt={demo.title} style={{ width: '60%', height: 'auto', marginBottom: 12 }} />
                     <h2 style={{ marginTop: 0 }}>{demo.title}</h2>
                     <p>{demo.description}</p>
                 </Link>
