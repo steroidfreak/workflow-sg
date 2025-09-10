@@ -1,18 +1,16 @@
-# Main site
-{$ROOT_DOMAIN}, www.{$ROOT_DOMAIN} {
+workflow.sg, www.workflow.sg {
   encode zstd gzip
 
-  # React frontend (served by web container)
   reverse_proxy web:80
 
-  # API under /api
   handle_path /api/* {
-    reverse_proxy api:{$PORT}
+    reverse_proxy api:3000
   }
 }
 
+
 # n8n on subdomain
-n8n.{$ROOT_DOMAIN} {
+n8n.workflow.sg {
   encode zstd gzip
   reverse_proxy n8n:5678
 }
