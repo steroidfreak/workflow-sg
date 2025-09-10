@@ -8,3 +8,8 @@
   # Everything else → React frontend
   reverse_proxy web:80
 }
+
+n8n.{$ROOT_DOMAIN} {
+  encode zstd gzip
+  reverse_proxy n8n:5678
+}
