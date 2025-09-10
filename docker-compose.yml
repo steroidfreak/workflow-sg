@@ -1,4 +1,4 @@
-# version: "3.9"
+version: "3.9"
 
 services:
   api:
@@ -22,44 +22,6 @@ services:
     depends_on:
       - api
 
-  n8n-db:
-    image: postgres:16-alpine
-    container_name: workflow_n8n_db
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: ${N8N_DB_NAME}
-      POSTGRES_USER: ${N8N_DB_USER}
-      POSTGRES_PASSWORD: ${N8N_DB_PASS}
-    volumes:
-      - n8n_db_data:/var/lib/postgresql/data
-
-  n8n:
-    image: n8nio/n8n:latest
-    container_name: workflow_n8n
-    restart: unless-stopped
-    depends_on:
-      - n8n-db
-    env_file: .env
-    environment:
-      - N8N_HOST=n8n.${ROOT_DOMAIN}
-      - N8N_PROTOCOL=https
-      - N8N_PORT=5678
-      - N8N_BASIC_AUTH_ACTIVE=true
-      - N8N_BASIC_AUTH_USER=${N8N_USER}
-      - N8N_BASIC_AUTH_PASSWORD=${N8N_PASS}
-      - DB_TYPE=postgresdb
-      - DB_POSTGRESDB_HOST=n8n-db
-      - DB_POSTGRESDB_PORT=5432
-      - DB_POSTGRESDB_DATABASE=${N8N_DB_NAME}
-      - DB_POSTGRESDB_USER=${N8N_DB_USER}
-      - DB_POSTGRESDB_PASSWORD=${N8N_DB_PASS}
-      - N8N_ENCRYPTION_KEY=${N8N_KEY}
-      - WEBHOOK_URL=https://n8n.${ROOT_DOMAIN}
-    volumes:
-      - n8n_data:/home/node/.n8n
-    expose:
-      - "5678"
-
   caddy:
     image: caddy:alpine
     container_name: workflow_caddy
@@ -71,13 +33,11 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
+    env_file: .env     # <-- lets {$ROOT_DOMAIN} and {$PORT} work in Caddyfile
     depends_on:
       - web
       - api
-      - n8n
 
 volumes:
-  n8n_data:
-  n8n_db_data:
   caddy_data:
   caddy_config:
