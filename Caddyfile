@@ -1,11 +1,10 @@
 {$ROOT_DOMAIN}, www.{$ROOT_DOMAIN} {
   encode zstd gzip
 
-  # React frontend
-  reverse_proxy web:80
+  # API routes (keep /api prefix)
+  @api path /api/*
+  reverse_proxy @api api:{$PORT}
 
-  # API under /api
-  handle_path /api/* {
-    reverse_proxy api:{$PORT}
-  }
+  # Everything else → React frontend
+  reverse_proxy web:80
 }
