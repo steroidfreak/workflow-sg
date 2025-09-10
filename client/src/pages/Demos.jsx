@@ -7,6 +7,12 @@ export default function Demos() {
             description: 'Summarize a paragraph via /api/demo/summarize.',
             path: '/demos/summarize',
             image: '/summarize-placeholder.png'
+        },
+        {
+            title: 'Demo: WhatsApp agent',
+            description: 'Chat with an AI via /api/demo/whatsapp.',
+            path: '/demos/whatsapp',
+            image: '/whatsapp-placeholder.png'
         }
     ]
 
