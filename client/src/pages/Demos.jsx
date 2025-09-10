@@ -34,8 +34,11 @@ export default function Demos() {
             {error && <div className="card" style={{ borderColor: '#ff6b6b' }}>Error: {error}</div>}
             {result && (
                 <div className="card">
-                    <h3>Result</h3>
-                    <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(result, null, 2)}</pre>
+                    <h3>Summary</h3>
+                    <p style={{ whiteSpace: 'pre-wrap' }}>{result.summary}</p>
+                    {typeof result.length === 'number' && (
+                        <p style={{ fontSize: 12, opacity: 0.7 }}>({result.length} chars)</p>
+                    )}
                 </div>
             )}
         </section>
