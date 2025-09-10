@@ -17,6 +17,15 @@ const chatAgent = new Agent({
     model: 'gpt-5',
 })
 
+// Agent used for summarizing arbitrary text
+const summarizeAgent = new Agent({
+    name: 'Text Summarizer',
+    instructions: 'Summarize the provided text in 1-2 sentences.',
+    tools: [],
+    handoffs: [],
+    model: 'gpt-5',
+})
+
 app.use(cors())
 app.use(express.json({ limit: '8mb' }))
 app.use(morgan('dev'))
@@ -26,12 +35,20 @@ app.get('/api/health', (_req, res) => {
     res.json({ ok: true, service: 'workflow-sg', timestamp: new Date().toISOString() })
 })
 
-// Simple demo (optional)
-app.post('/api/demo/summarize', (req, res) => {
+// Simple demo using an agent to summarize text
+app.post('/api/demo/summarize', async (req, res) => {
     const { text = '' } = req.body || {}
     const clean = String(text).replace(/\s+/g, ' ').trim()
-    const summary = clean ? (clean.length <= 220 ? clean : clean.slice(0, 220) + '…') : 'No text provided.'
-    res.json({ summary, length: summary.length })
+    if (!clean) return res.status(400).json({ error: 'No text provided.' })
+
+    try {
+        const result = await run(summarizeAgent, clean)
+        const summary = result.finalOutput
+        res.json({ summary, length: summary.length })
+    } catch (e) {
+        console.error('summarize error', e)
+        res.status(502).json({ error: 'summarizer_unavailable' })
+    }
 })
 
 // Contact stub
