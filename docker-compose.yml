@@ -36,11 +36,6 @@ services:
       - web
       - api
 
-volumes:
-  caddy_data:
-  caddy_config:
-  n8n_db_data:
-  n8n_data:
 
 
   n8n-db:
@@ -80,3 +75,8 @@ volumes:
       - n8n_data:/home/node/.n8n
     expose:
       - "5678"
+volumes:
+  caddy_data:
+  caddy_config:
+  n8n_db_data:
+  n8n_data:
