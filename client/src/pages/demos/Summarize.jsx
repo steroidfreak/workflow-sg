@@ -26,6 +26,7 @@ export default function Summarize() {
             <div className="card">
                 <h2 style={{ marginTop: 0 }}>Demo: Summarize text</h2>
                 <p>This calls <code>/api/demo/summarize</code> on your server and returns a concise summary.</p>
+                <img src="/summarize-placeholder.png" alt="Summarize text demo" style={{ width: '100%', height: 'auto', marginBottom: 12 }} />
                 <textarea className="textarea" value={text} onChange={(e) => setText(e.target.value)} />
                 <div style={{ display: 'flex', gap: 12, marginTop: 12 }}>
                     <button className="btn" onClick={runDemo}>Summarize</button>
