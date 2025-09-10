@@ -7,6 +7,7 @@ import ChatAgent from './components/ChatAgent.jsx'
 import Home from './pages/Home.jsx'
 import Services from './pages/Services.jsx'
 import Demos from './pages/Demos.jsx'
+import Summarize from './pages/demos/Summarize.jsx'
 import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
 import NotFound from './pages/NotFound.jsx'
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/services" element={<Services />} />
           <Route path="/demos" element={<Demos />} />
+          <Route path="/demos/summarize" element={<Summarize />} />
           <Route path="/about" element={<About />} />
           {/* <Route path="/n8n-test" element={<N8nTest />} /> */}
 
