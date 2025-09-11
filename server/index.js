@@ -169,8 +169,16 @@ app.all('/api/n8n/trigger', async (req, res) => {
 })
 
 app.post('/api/n8n/chat', async (req, res) => {
+
+    const webhook = process.env.N8N_CHAT_WEBHOOK
+    if (!webhook) return res.status(500).json({ error: 'N8N_CHAT_WEBHOOK missing' })
+
+    try {
+        const resp = await fetch(webhook, {
+
     try {
         const resp = await fetch(N8N_CHAT_WEBHOOK, {
+
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(req.body ?? {}),
