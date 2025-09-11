@@ -166,6 +166,33 @@ app.all('/api/n8n/trigger', async (req, res) => {
     }
 })
 
+app.post('/api/n8n/chat', async (req, res) => {
+    const webhook = process.env.N8N_CHAT_WEBHOOK
+    if (!webhook) return res.status(500).json({ error: 'N8N_CHAT_WEBHOOK missing' })
+
+    try {
+        const resp = await fetch(webhook, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(req.body ?? {}),
+        })
+        const ct = (resp.headers.get('content-type') || '').toLowerCase()
+        const raw = await resp.text()
+        let payload = raw
+        if (ct.includes('application/json')) {
+            try {
+                payload = raw ? JSON.parse(raw) : {}
+            } catch {
+                // keep raw string on parse fail
+            }
+        }
+        res.status(resp.status).send(payload)
+    } catch (e) {
+        console.error('n8n chat error:', e)
+        res.status(502).json({ error: 'upstream_error', detail: e.message })
+    }
+})
+
 app.listen(PORT, () => {
     console.log(`API listening on http://localhost:${PORT}`)
 })
