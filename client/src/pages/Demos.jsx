@@ -13,6 +13,12 @@ export default function Demos() {
             description: 'Chat with an AI via /api/demo/whatsapp.',
             path: '/demos/whatsapp',
             image: '/whatsapp-placeholder.png'
+        },
+        {
+            title: 'Demo: n8n webhook chat',
+            description: 'Test messaging through an n8n workflow.',
+            path: '/demos/webhook-chat',
+            image: '/summarize-placeholder.png'
         }
     ]
 

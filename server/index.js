@@ -6,6 +6,8 @@ import { Agent, run } from '@openai/agents'
 
 const app = express()
 const PORT = process.env.PORT || 3000
+const N8N_CHAT_WEBHOOK =
+    'https://n8n.workflow.sg/webhook/8beab913-b8c9-4fdd-9703-f71b7873aa31/webhook'
 
 // Agent that answers questions about AI services for SMEs
 const chatAgent = new Agent({
@@ -162,6 +164,30 @@ app.all('/api/n8n/trigger', async (req, res) => {
         res.status(resp.status).send(payload)
     } catch (e) {
         console.error('n8n trigger error:', e)
+        res.status(502).json({ error: 'upstream_error', detail: e.message })
+    }
+})
+
+app.post('/api/n8n/chat', async (req, res) => {
+    try {
+        const resp = await fetch(N8N_CHAT_WEBHOOK, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(req.body ?? {}),
+        })
+        const ct = (resp.headers.get('content-type') || '').toLowerCase()
+        const raw = await resp.text()
+        let payload = raw
+        if (ct.includes('application/json')) {
+            try {
+                payload = raw ? JSON.parse(raw) : {}
+            } catch {
+                // keep raw string on parse fail
+            }
+        }
+        res.status(resp.status).send(payload)
+    } catch (e) {
+        console.error('n8n chat error:', e)
         res.status(502).json({ error: 'upstream_error', detail: e.message })
     }
 })
