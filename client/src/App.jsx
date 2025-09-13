@@ -10,6 +10,7 @@ import Demos from './pages/Demos.jsx'
 import Summarize from './pages/demos/Summarize.jsx'
 import WhatsAppAgent from './pages/demos/WhatsAppAgent.jsx'
 import WebhookChat from './pages/demos/WebhookChat.jsx'
+import N8nChat from './pages/demos/N8nChat.jsx'
 import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
 import NotFound from './pages/NotFound.jsx'
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/demos/summarize" element={<Summarize />} />
           <Route path="/demos/whatsapp" element={<WhatsAppAgent />} />
           <Route path="/demos/webhook-chat" element={<WebhookChat />} />
+          <Route path="/demos/n8n-chat" element={<N8nChat />} />
           <Route path="/about" element={<About />} />
           {/* <Route path="/n8n-test" element={<N8nTest />} /> */}
 

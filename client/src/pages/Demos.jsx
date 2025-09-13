@@ -19,6 +19,12 @@ export default function Demos() {
             description: 'Test messaging through an n8n workflow.',
             path: '/demos/webhook-chat',
             image: '/summarize-placeholder.png'
+        },
+        {
+            title: 'Demo: n8n chat',
+            description: 'Chat with an n8n workflow via /api/n8n/chat.',
+            path: '/demos/n8n-chat',
+            image: '/summarize-placeholder.png'
         }
     ]
 
