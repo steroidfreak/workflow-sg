@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3000
 const N8N_CHAT_WEBHOOK =
     'https://n8n.workflow.sg/webhook/ca7eaba9-e5ef-48a3-bb40-373b4970a778'
 
+// console.log('N8N_CHAT_WEBHOOK =', N8N_CHAT_WEBHOOK)
 // Agent that answers questions about AI services for SMEs
 const chatAgent = new Agent({
     name: 'SME AI Advisor',
@@ -129,69 +130,67 @@ app.get('/api/agent', (req, res) => {
 // })
 
 // Method-preserving passthrough (handles POST correctly)
-app.all('/api/n8n/trigger', async (req, res) => {
+app.post('/api/n8n/trigger', async (req, res) => {
+    console.log('POST /api/n8n/trigger body:', req.body)
     try {
         const base = process.env.N8N_WEBHOOK_URL
         if (!base) return res.status(500).json({ error: 'N8N_WEBHOOK_URL missing' })
 
-        const method = req.method.toUpperCase()
-        const url = new URL(base)
+        const resp = await fetch(base, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(req.body || {})
+        })
 
-        // Forward query for non-body methods
-        if (!['POST', 'PUT', 'PATCH'].includes(method)) {
-            Object.entries(req.query || {}).forEach(([k, v]) => url.searchParams.set(k, String(v)))
-        }
-
-        const init = { method, headers: {} }
-        if (['POST', 'PUT', 'PATCH'].includes(method)) {
-            init.headers['Content-Type'] = 'application/json'
-            init.body = JSON.stringify(req.body ?? {})
-        }
-
-        const resp = await fetch(url.toString(), init)
-        const ct = (resp.headers.get('content-type') || '').toLowerCase()
-        const raw = await resp.text()               // may be empty
-
-        let payload = raw
+        // try JSON first
+        const ct = resp.headers.get('content-type') || ''
+        let reply
         if (ct.includes('application/json')) {
-            try {
-                payload = raw ? JSON.parse(raw) : {}    // handle empty JSON safely
-            } catch {
-                // leave as raw string if parsing fails
-            }
+            reply = await resp.json()
+        } else {
+            reply = await resp.text()
         }
 
-        res.status(resp.status).send(payload)
+        res.status(resp.status).send(reply)
     } catch (e) {
         console.error('n8n trigger error:', e)
         res.status(502).json({ error: 'upstream_error', detail: e.message })
     }
 })
 
-app.post('/api/n8n/chat', async (req, res) => {
 
-    const webhook = process.env.N8N_CHAT_WEBHOOK
+app.post('/api/n8n/chat', async (req, res) => {
+    const webhook = N8N_CHAT_WEBHOOK
+    console.log(webhook);
     if (!webhook) return res.status(500).json({ error: 'N8N_CHAT_WEBHOOK missing' })
 
-
-
     try {
-        const resp = await fetch(N8N_CHAT_WEBHOOK, {
+        // optional: short timeout so requests don’t hang forever
+        const controller = new AbortController()
+        const timer = setTimeout(() => controller.abort(), 10000)
 
+        const resp = await fetch(webhook, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(req.body ?? {}),
+            signal: controller.signal
         })
+
+        clearTimeout(timer)
+
         const ct = (resp.headers.get('content-type') || '').toLowerCase()
         const raw = await resp.text()
+
+        // safely parse JSON if appropriate; otherwise return raw text
         let payload = raw
         if (ct.includes('application/json')) {
             try {
                 payload = raw ? JSON.parse(raw) : {}
             } catch {
-                // keep raw string on parse fail
+                // leave as raw string if parse fails
             }
         }
+
         res.status(resp.status).send(payload)
     } catch (e) {
         console.error('n8n chat error:', e)
