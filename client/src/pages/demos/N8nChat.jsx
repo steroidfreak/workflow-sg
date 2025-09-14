@@ -31,7 +31,17 @@ export default function N8nChat() {
             let reply = ''
             if (ct.includes('application/json')) {
                 const data = await res.json()
-                reply = typeof data === 'string' ? data : JSON.stringify(data, null, 2)
+                if (typeof data === 'string') {
+                    reply = data
+                } else {
+                    // try common keys first, fall back to JSON string
+                    reply =
+                        data.reply ||
+                        data.message ||
+                        data.text ||
+                        data.answer ||
+                        JSON.stringify(data, null, 2)
+                }
             } else {
                 reply = await res.text()
             }
@@ -71,10 +81,19 @@ export default function N8nChat() {
 }
 
 const styles = {
-    wrap: { display: 'grid', placeItems: 'center', padding: '32px 16px' },
+    wrap: {
+        display: 'grid',
+        placeItems: 'center',
+        padding: '32px 16px',
+        minHeight: '100vh',
+    },
     chatBox: {
-        width: 560,
-        maxWidth: '100%',
+        width: '100%',
+        maxWidth: 560,
+        height: '80vh',
+        maxHeight: 600,
+        display: 'flex',
+        flexDirection: 'column',
         border: '1px solid var(--border)',
         borderRadius: 12,
         overflow: 'hidden',
@@ -88,7 +107,7 @@ const styles = {
         fontWeight: 700,
     },
     messages: {
-        height: 380,
+        flex: 1,
         overflowY: 'auto',
         padding: 12,
         display: 'flex',
