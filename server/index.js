@@ -7,6 +7,7 @@ import { Agent, run } from '@openai/agents'
 const app = express()
 const PORT = process.env.PORT || 3000
 const N8N_CHAT_WEBHOOK =
+    process.env.N8N_CHAT_WEBHOOK ||
     'https://n8n.workflow.sg/webhook/ca7eaba9-e5ef-48a3-bb40-373b4970a778'
 
 // console.log('N8N_CHAT_WEBHOOK =', N8N_CHAT_WEBHOOK)
